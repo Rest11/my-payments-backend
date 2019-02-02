@@ -38,10 +38,8 @@ export class Database {
 
     // Creating all tables
     public async create (): Promise<void> {
-        const syncsModels: any[] = this.models.map((model: SequelizeInstance.Model<Instance<any>, any>) => {
-            return model.sync({ force: false });
-        });
-
-        await Promise.all(syncsModels);
+        await Promise.all(
+            this.models.map((model: SequelizeInstance.Model<Instance<any>, any>) => model.sync({ force: false })),
+        );
     }
 }

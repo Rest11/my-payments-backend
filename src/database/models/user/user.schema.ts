@@ -30,6 +30,15 @@ export const userSchema = {
             isDate: true,
         },
     },
+    externalId: {
+        type: DataTypes.STRING(255),
+        unique: true,
+        allowNull: false,
+        field: DatabaseContract.Users.COLUMN_EXTERNAL_ID,
+        validate: {
+            notEmpty: true,
+        },
+    },
     email: {
         type: DataTypes.STRING(255),
         allowNull: false,

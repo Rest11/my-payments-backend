@@ -11,7 +11,7 @@ export class UserProvider {
         indexes: [
             {
                 fields: [DatabaseContract.Users.COLUMN_EMAIL],
-                name: DatabaseContract.Users.INDEX_EMAIL,
+                name: DatabaseContract.Users.INDEX_EXTERNAL_ID,
             },
         ],
     };

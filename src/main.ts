@@ -7,7 +7,7 @@ import { NestApplicationOptions } from '@nestjs/common/interfaces/nest-applicati
 
 async function bootstrap () {
     // setting global prefix for each request
-    const globalPrefix: string = `/${Rest.API}/${config.server.apiVersion}`;
+    const globalPrefix: string = `${Rest.API}/v${config.server.apiVersion}`;
 
     // setting options for Nest application
     const nestOptions: NestApplicationOptions = {

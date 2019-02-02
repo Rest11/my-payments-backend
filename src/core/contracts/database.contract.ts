@@ -8,9 +8,10 @@ export namespace DatabaseContract {
     export abstract class Users extends Base {
         public static readonly TABLE_NAME = 'user';
 
+        public static readonly COLUMN_EXTERNAL_ID = 'external_id';
         public static readonly COLUMN_EMAIL = 'email';
         public static readonly COLUMN_NAME = 'name';
 
-        public static readonly INDEX_EMAIL = 'email_idx';
+        public static readonly INDEX_EXTERNAL_ID = 'external_id_idx';
     }
 }

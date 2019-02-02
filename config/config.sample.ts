@@ -12,4 +12,10 @@ export const config = {
         idle: 60 * 1000,                        // the maximum time, in milliseconds, that a connection can be idle before being released
         maxPoolConnection: 10,                  // maximum number of connection in pool
     },
+    auth: {                                 // authentication configuration
+        google: {                           // google credentials of authentication (https://console.developers.google.com)
+            clientID: '1234567890',             // client id of the app from the google account for developers
+            providerID: '123456790',            // provider id of the app from the google account for developers
+        },
+    },
 };
