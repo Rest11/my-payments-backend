@@ -4,7 +4,7 @@ import { DatabaseContract } from '../../../core/contracts/database.contract';
 const DataTypes: SequelizeDataTypes = require('sequelize').DataTypes;
 
 export const userSchema = {
-    id: {
+    [DatabaseContract.Base.PROPERTY_ID]: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -12,7 +12,7 @@ export const userSchema = {
         allowNull: false,
         field: DatabaseContract.Users.COLUMN_ID,
     },
-    createdAt: {
+    [DatabaseContract.Base.PROPERTY_CREATED_AT]: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
@@ -21,7 +21,7 @@ export const userSchema = {
             isDate: true,
         },
     },
-    updatedAt: {
+    [DatabaseContract.Base.PROPERTY_UPDATED_AT]: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
@@ -30,7 +30,7 @@ export const userSchema = {
             isDate: true,
         },
     },
-    externalId: {
+    [DatabaseContract.Users.PROPERTY_EXTERNAL_ID]: {
         type: DataTypes.STRING(255),
         unique: true,
         allowNull: false,
@@ -39,7 +39,7 @@ export const userSchema = {
             notEmpty: true,
         },
     },
-    email: {
+    [DatabaseContract.Users.PROPERTY_EMAIL]: {
         type: DataTypes.STRING(255),
         allowNull: false,
         field: DatabaseContract.Users.COLUMN_EMAIL,
@@ -48,12 +48,20 @@ export const userSchema = {
             isEmail: true,
         },
     },
-    name: {
+    [DatabaseContract.Users.PROPERTY_NAME]: {
         type: DataTypes.STRING(255),
         allowNull: false,
         field: DatabaseContract.Users.COLUMN_NAME,
         validate: {
             notEmpty: true,
+        },
+    },
+    [DatabaseContract.Users.PROPERTY_AVATAR]: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        field: DatabaseContract.Users.COLUMN_AVATAR,
+        validate: {
+            notEmpty: false,
         },
     },
 };

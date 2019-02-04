@@ -3,10 +3,13 @@ import * as SequelizeInstance from 'sequelize';
 import { Instance, Sequelize } from 'sequelize';
 import { config } from '../../config/config';
 import { UserProvider } from './models/user/user.provider';
+import { UserModel } from './models/user/user.model';
 
 export class Database {
     private readonly sequelize: Sequelize;
-    private models: SequelizeInstance.Model<Instance<any>, any>[] = [];
+    private readonly models: SequelizeInstance.Model<Instance<any>, any>[] = [];
+
+    public readonly userModel: UserModel;
 
     constructor () {
         this.sequelize = new SequelizeInstance(
@@ -31,8 +34,10 @@ export class Database {
             },
         );
 
+        this.userModel = UserProvider.defineModel(this.sequelize);
+
         this.models = [
-            UserProvider.defineModel(this.sequelize),
+            this.userModel,
         ];
     }
 
