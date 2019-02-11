@@ -1,19 +1,19 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './user.controller';
 import { databaseProvider } from '../../database/database.provider';
 import { AuthService } from '../../services/auth.service';
-import { UserService } from './user.service';
+import { TransactionService } from './transaction.service';
+import { TransactionController } from './transaction.controller';
 import { googleAuthProvider } from '../../core/utils/google-auth/google-auth.provider';
 
 @Module({
     providers: [
-        AuthService,
-        UserService,
         databaseProvider,
         googleAuthProvider, // this provider for AuthService
+        AuthService,
+        TransactionService,
     ],
     controllers: [
-        UserController,
+        TransactionController,
     ],
 })
-export class UserModule { }
+export class TransactionModule { }

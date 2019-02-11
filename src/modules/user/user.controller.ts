@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserType } from '../../database/models/user/user.type';
 import { UserService } from './user.service';
 import { UserInstance } from '../../database/models/user/user.instance';
+import { DatabaseContract } from '../../core/contracts/database.contract';
 
 @Controller(Rest.User.BASE)
 export class UserController {
@@ -24,10 +25,10 @@ export class UserController {
     ): Promise<UserInstance> {
         const userData: TokenPayload | null = await this.authService.checkUserToken(userToken);
         const userDto: UserType = {
-            externalId: userData.sub,
-            name: userData.name,
-            email: userData.email,
-            avatar: userData.picture,
+            [DatabaseContract.Users.PROPERTY_EXTERNAL_ID]: userData.sub,
+            [DatabaseContract.Users.PROPERTY_NAME]: userData.name,
+            [DatabaseContract.Users.PROPERTY_EMAIL]: userData.email,
+            [DatabaseContract.Users.PROPERTY_AVATAR]: userData.picture,
         };
 
         const result: [ UserInstance, boolean ] = await this.userService.saveUser(userDto);

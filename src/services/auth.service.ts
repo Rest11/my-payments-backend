@@ -1,12 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { OAuth2Client } from 'google-auth-library';
 import { LoginTicket, TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import { config } from '../../config/config';
 import { CheckingTokenDto } from '../modules/auth/types/checking-token.dto';
+import { Injectables } from '../core/constants';
 
 @Injectable()
 export class AuthService {
-    private readonly client: OAuth2Client = new OAuth2Client(config.auth.google.clientID);
+    constructor (
+        @Inject(Injectables.GOOGLE_AUTH)
+        private readonly client: OAuth2Client,
+    ) {}
 
     public async checkUserToken (authToken: CheckingTokenDto): Promise<TokenPayload | null> {
         try {

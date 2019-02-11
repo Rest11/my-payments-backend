@@ -4,15 +4,17 @@ import { DatabaseContract } from '../../../core/contracts/database.contract';
 const DataTypes: SequelizeDataTypes = require('sequelize').DataTypes;
 
 export const userSchema = {
-    [DatabaseContract.Base.PROPERTY_ID]: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+    [DatabaseContract.Users.PROPERTY_EXTERNAL_ID]: {
+        type: DataTypes.STRING(255),
         primaryKey: true,
         unique: true,
         allowNull: false,
-        field: DatabaseContract.Users.COLUMN_ID,
+        field: DatabaseContract.Users.COLUMN_EXTERNAL_ID,
+        validate: {
+            notEmpty: true,
+        },
     },
-    [DatabaseContract.Base.PROPERTY_CREATED_AT]: {
+    [DatabaseContract.Users.PROPERTY_CREATED_AT]: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
@@ -21,22 +23,13 @@ export const userSchema = {
             isDate: true,
         },
     },
-    [DatabaseContract.Base.PROPERTY_UPDATED_AT]: {
+    [DatabaseContract.Users.PROPERTY_UPDATED_AT]: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
         field: DatabaseContract.Users.COLUMN_UPDATED_AT,
         validate: {
             isDate: true,
-        },
-    },
-    [DatabaseContract.Users.PROPERTY_EXTERNAL_ID]: {
-        type: DataTypes.STRING(255),
-        unique: true,
-        allowNull: false,
-        field: DatabaseContract.Users.COLUMN_EXTERNAL_ID,
-        validate: {
-            notEmpty: true,
         },
     },
     [DatabaseContract.Users.PROPERTY_EMAIL]: {
