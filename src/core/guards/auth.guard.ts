@@ -11,9 +11,7 @@ export class AuthGuard implements CanActivate {
 
     public async canActivate (context: ExecutionContext): Promise<boolean> {
         const userToken: string = context.switchToHttp().getRequest().headers[RequestParams.AUTHORIZATION];
-        const user: TokenPayload | null = await this.authService.checkUserToken({
-            currentToken: userToken,
-        });
+        const user: TokenPayload | null = await this.authService.checkUserToken(userToken);
 
         return !!user;
     }

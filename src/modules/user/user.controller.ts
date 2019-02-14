@@ -23,7 +23,7 @@ export class UserController {
     public async saveUser (
         @Body(new ValidationPipe(CHECKING_TOKEN)) userToken: CheckingTokenDto,
     ): Promise<UserInstance> {
-        const userData: TokenPayload | null = await this.authService.checkUserToken(userToken);
+        const userData: TokenPayload | null = await this.authService.checkUserToken(userToken.currentToken);
         const userDto: UserType = {
             [DatabaseContract.Users.PROPERTY_EXTERNAL_ID]: userData.sub,
             [DatabaseContract.Users.PROPERTY_NAME]: userData.name,

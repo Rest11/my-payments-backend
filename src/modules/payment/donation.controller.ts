@@ -29,7 +29,7 @@ export class DonationController {
         @Body(new ValidationPipe(DONATION)) dto: DonationDto,
     ): Promise<DonationResponse> {
         const donationContract: typeof DatabaseContract.Donations = DatabaseContract.Donations;
-        const userData: TokenPayload | null = await this.authService.checkUserToken({ currentToken: token });
+        const userData: TokenPayload | null = await this.authService.checkUserToken(token);
         const donationDto: IChargeCreationOptions = {
             amount: dto.amountPayment * 100, // conversion into cents
             currency: PaymentConfiguration.CURRENCY,

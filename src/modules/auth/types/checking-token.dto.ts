@@ -1,3 +1,3 @@
 export interface CheckingTokenDto {
-    currentToken: string;
+    currentToken?: string;
 }

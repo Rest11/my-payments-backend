@@ -28,7 +28,7 @@ export class TransactionController {
         @Headers(RequestParams.AUTHORIZATION) token: string,
         @Query(new ValidationPipe(COLLECTION_QUERY_SCHEMA)) dto: CollectionQueryDto,
     ): Promise<CollectionResponse<DonationInstance>> {
-        const userData: TokenPayload | null = await this.authService.checkUserToken({ currentToken: token });
+        const userData: TokenPayload | null = await this.authService.checkUserToken(token);
 
         const params: TransactionsDto = {
             userId: userData.sub,

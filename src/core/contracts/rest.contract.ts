@@ -3,6 +3,8 @@ export namespace Rest {
 
     export namespace Auth {
         export const BASE = 'authenticate';
+
+        export const GET_TOKEN = 'get-token';
     }
 
     export namespace User {
