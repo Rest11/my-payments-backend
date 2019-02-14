@@ -13,6 +13,9 @@ export namespace Rest {
         export const BASE = 'payment';
 
         export const DONATION = 'donation';
+        export const USERS_AMOUNT = 'users-amount';
+        export const PAYMENTS_AMOUNT = 'payments-amount';
+        export const PAYMENTS_SUM = 'payments-sum';
     }
 
     export namespace Transactions {

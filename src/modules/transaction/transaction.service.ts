@@ -31,7 +31,7 @@ export class TransactionService {
             limit: dto.limit || DefaultCommonValues.LIMIT,
             offset: dto.offset || DefaultCommonValues.OFFSET,
             order: [[
-                dto.sortField || DatabaseContract.Base.COLUMN_CREATED_AT,
+                dto.sortField || DatabaseContract.Donations.COLUMN_CREATED_AT,
                 dto.sortOrder || SortOrders.DESC,
             ]],
         };

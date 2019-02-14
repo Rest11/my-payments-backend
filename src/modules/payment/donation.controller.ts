@@ -1,6 +1,7 @@
-import { BadRequestException, Body, Controller, Headers, Post, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Headers, Post, UseGuards } from '@nestjs/common';
 import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import * as Stripe from 'stripe';
+import IChargeCreationOptions = Stripe.charges.IChargeCreationOptions;
 import { Rest } from '../../core/contracts/rest.contract';
 import { AuthService } from '../../services/auth.service';
 import { AuthGuard } from '../../core/guards/auth.guard';
@@ -12,7 +13,7 @@ import { PaymentService } from './payment.service';
 import { DonationResponse } from './types/donation.response';
 import { DonationType } from '../../database/models/donation/donation.type';
 import { DatabaseContract } from '../../core/contracts/database.contract';
-import IChargeCreationOptions = Stripe.charges.IChargeCreationOptions;
+import { DonationInstance } from '../../database/models/donation/donation.instance';
 
 @Controller(Rest.Payment.BASE)
 export class DonationController {
@@ -69,5 +70,23 @@ export class DonationController {
             // error handler of other errors
             throw new BadRequestException('Something went wrong. Please try later.');
         }
+    }
+
+    @Get(Rest.Payment.USERS_AMOUNT)
+    @UseGuards(AuthGuard)
+    public async usersAmount (): Promise<DonationInstance[]> {
+        return this.paymentService.getUsersAmount();
+    }
+
+    @Get(Rest.Payment.PAYMENTS_AMOUNT)
+    @UseGuards(AuthGuard)
+    public async paymentsAmount (): Promise<DonationInstance[]> {
+        return this.paymentService.getPaymentsAmount();
+    }
+
+    @Get(Rest.Payment.PAYMENTS_SUM)
+    @UseGuards(AuthGuard)
+    public async paymentsSum (): Promise<DonationInstance[]> {
+        return this.paymentService.getPaymentsSum();
     }
 }
