@@ -8,6 +8,5 @@ config/**/*.js
 src/**/*.js
 !src/database/migrations/*.js
 !src/database/seeders/*.js
-!config/sequelize.config.js
 
 !.gitkeep

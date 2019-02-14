@@ -2,7 +2,7 @@
   "name": "my-payments-backend",
   "version": "0.0.1",
   "description": "My Payments API Server",
-  "author": "Max_Shynkarenko",
+  "author": "Max Shynkarenko",
   "license": "MIT",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/main.ts",

@@ -63,16 +63,14 @@ export class PaymentService {
                     dateFormatField,
                 ],
                 [
-                    // sequelize.fn('count', sequelize.col(DatabaseContract.Donations.COLUMN_FK_USER_EXTERNAL_ID)),
-                    sequelize.fn('sum', sequelize.col(DatabaseContract.Donations.COLUMN_FK_USER_EXTERNAL_ID)),
+                    sequelize.fn('count', sequelize.col(DatabaseContract.Donations.COLUMN_FK_USER_EXTERNAL_ID)),
                     usersCountField,
                 ],
-                // DatabaseContract.Donations.COLUMN_FK_USER_EXTERNAL_ID
+                // DatabaseContract.Donations.COLUMN_FK_USER_EXTERNAL_ID,
             ],
             group: [
                 dateFormatField,
                 // DatabaseContract.Donations.COLUMN_FK_USER_EXTERNAL_ID,
-                // DatabaseContract.Donations.PROPERTY_STATUS,
             ],
         };
 
@@ -94,7 +92,6 @@ export class PaymentService {
             ],
             group: [
                 this.dateFormatField,
-                DatabaseContract.Donations.PROPERTY_STATUS,
             ],
         };
 
@@ -116,7 +113,6 @@ export class PaymentService {
             ],
             group: [
                 this.dateFormatField,
-                DatabaseContract.Donations.PROPERTY_STATUS,
             ],
         };
 
