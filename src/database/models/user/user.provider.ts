@@ -8,12 +8,6 @@ import { userSchema } from './user.schema';
 export class UserProvider {
     private static options: DefineOptions<UserInstance> = {
         timestamps: true,
-        indexes: [
-            {
-                fields: [DatabaseContract.Users.COLUMN_EMAIL],
-                name: DatabaseContract.Users.INDEX_EMAIL,
-            },
-        ],
     };
 
     public static defineModel (sequelize: Sequelize): UserModel {

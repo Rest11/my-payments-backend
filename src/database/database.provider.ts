@@ -5,5 +5,10 @@ import { Database } from './database';
 export const databaseProvider: CustomFactory = {
     name: Injectables.DATABASE,
     provide: Injectables.DATABASE,
-    useFactory: () => new Database().create(),
+    useFactory: async () => {
+        const databaseObject: Database = new Database();
+        await databaseObject.create();
+
+        return databaseObject;
+    },
 };

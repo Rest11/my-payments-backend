@@ -3,10 +3,16 @@ import * as SequelizeInstance from 'sequelize';
 import { Instance, Sequelize } from 'sequelize';
 import { config } from '../../config/config';
 import { UserProvider } from './models/user/user.provider';
+import { UserModel } from './models/user/user.model';
+import { DonationModel } from './models/donation/donation.model';
+import { DonationProvider } from './models/donation/donation.provider';
 
 export class Database {
     private readonly sequelize: Sequelize;
-    private models: SequelizeInstance.Model<Instance<any>, any>[] = [];
+    private readonly models: SequelizeInstance.Model<Instance<any>, any>[] = [];
+
+    public readonly userModel: UserModel;
+    public readonly donationModel: DonationModel;
 
     constructor () {
         this.sequelize = new SequelizeInstance(
@@ -31,17 +37,25 @@ export class Database {
             },
         );
 
+        // Defining table models
+        this.userModel = UserProvider.defineModel(this.sequelize);
+        this.donationModel = DonationProvider.defineModel(this.sequelize);
+
+        // Creating association models
+        DonationProvider.associateModel(this.donationModel, this.userModel);
+
+        // the order is important. Make sure a table that has foreign keys will be created after the main table
         this.models = [
-            UserProvider.defineModel(this.sequelize),
+            this.userModel,
+            this.donationModel,
         ];
     }
 
     // Creating all tables
     public async create (): Promise<void> {
-        const syncsModels: any[] = this.models.map((model: SequelizeInstance.Model<Instance<any>, any>) => {
-            return model.sync({ force: false });
-        });
-
-        await Promise.all(syncsModels);
+        // you can not use Promise.all because the order of tables is important
+        for (const model of this.models) {
+            await model.sync({ force: false });
+        }
     }
 }
