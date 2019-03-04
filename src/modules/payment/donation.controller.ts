@@ -68,7 +68,7 @@ export class DonationController {
             if (paymentResult.transactionId) await this.paymentService.refundDonation(paymentResult.transactionId);
 
             // error handler of other errors
-            throw new BadRequestException('Something went wrong. Please try later.');
+            throw new BadRequestException('Something went wrong. Please try later');
         }
     }
 
