@@ -6,10 +6,12 @@ import { DonationModel } from './donation.model';
 import { donationSchema } from './donation.schema';
 import { DbReferentialActions } from '../../../core/constants';
 import { UserModel } from '../user/user.model';
+import { config } from '../../../../config/config';
 
 export class DonationProvider {
     private static options: DefineOptions<DonationInstance> = {
         timestamps: true,
+        charset: config.database.charset,
     };
 
     public static defineModel (sequelize: Sequelize): DonationModel {

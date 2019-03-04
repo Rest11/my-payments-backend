@@ -6,6 +6,7 @@ export enum Injectables {
 
 export enum RequestParams {
     AUTHORIZATION = 'authorization',
+    AUTH_PLATFORM = 'auth-platform',
 }
 
 export enum PaymentConfiguration {
@@ -33,4 +34,9 @@ export enum SortOrders {
 export enum DefaultCommonValues {
     LIMIT = 10,
     OFFSET = 0,
+}
+
+export enum AuthPlatform {
+    GOOGLE = 'google',
+    FACEBOOK = 'facebook',
 }

@@ -1,15 +1,13 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Headers, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { Rest } from '../../core/contracts/rest.contract';
-import { ValidationPipe } from '../../core/pipes/validation.pipe';
-import { CHECKING_TOKEN } from '../auth/schemas/checking-token.schema';
-import { CheckingTokenDto } from '../auth/types/checking-token.dto';
-import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import { AuthService } from '../../services/auth.service';
 import { UserType } from '../../database/models/user/user.type';
 import { UserService } from './user.service';
 import { UserInstance } from '../../database/models/user/user.instance';
 import { DatabaseContract } from '../../core/contracts/database.contract';
+import { RequestParams } from '../../core/constants';
+import { UserResponse } from '../../core/types/user-response';
 
 @Controller(Rest.User.BASE)
 export class UserController {
@@ -18,17 +16,18 @@ export class UserController {
         private readonly userService: UserService,
     ) {}
 
-    @Post()
+    @Get()
     @UseGuards(AuthGuard)
     public async saveUser (
-        @Body(new ValidationPipe(CHECKING_TOKEN)) userToken: CheckingTokenDto,
+        @Headers(RequestParams.AUTHORIZATION) userToken: string,
+        @Headers(RequestParams.AUTH_PLATFORM) authPlatform: string,
     ): Promise<UserInstance> {
-        const userData: TokenPayload | null = await this.authService.checkUserToken(userToken.currentToken);
+        const userData: UserResponse | null = await this.authService.checkUserToken(userToken, authPlatform);
         const userDto: UserType = {
-            [DatabaseContract.Users.PROPERTY_EXTERNAL_ID]: userData.sub,
+            [DatabaseContract.Users.PROPERTY_EXTERNAL_ID]: userData.id,
             [DatabaseContract.Users.PROPERTY_NAME]: userData.name,
             [DatabaseContract.Users.PROPERTY_EMAIL]: userData.email,
-            [DatabaseContract.Users.PROPERTY_AVATAR]: userData.picture,
+            [DatabaseContract.Users.PROPERTY_AVATAR]: userData.avatar,
         };
 
         const result: [ UserInstance, boolean ] = await this.userService.saveUser(userDto);
