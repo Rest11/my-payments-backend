@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthService } from '../../services/auth.service';
-import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import { RequestParams } from '../constants';
+import { UserResponse } from '../types/user-response';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -11,7 +11,9 @@ export class AuthGuard implements CanActivate {
 
     public async canActivate (context: ExecutionContext): Promise<boolean> {
         const userToken: string = context.switchToHttp().getRequest().headers[RequestParams.AUTHORIZATION];
-        const user: TokenPayload | null = await this.authService.checkUserToken(userToken);
+        const authPlatform: string = context.switchToHttp().getRequest().headers[RequestParams.AUTH_PLATFORM];
+
+        const user: UserResponse | null = await this.authService.checkUserToken(userToken, authPlatform);
 
         return !!user;
     }
