@@ -1,5 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Headers, Post, UseGuards } from '@nestjs/common';
-import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
+import { BadRequestException, Body, Controller, Get, Headers, Post, UseGuards, UsePipes } from '@nestjs/common';
 import * as Stripe from 'stripe';
 import IChargeCreationOptions = Stripe.charges.IChargeCreationOptions;
 import { Rest } from '../../core/contracts/rest.contract';
@@ -14,6 +13,8 @@ import { DonationResponse } from './types/donation.response';
 import { DonationType } from '../../database/models/donation/donation.type';
 import { DatabaseContract } from '../../core/contracts/database.contract';
 import { DonationInstance } from '../../database/models/donation/donation.instance';
+import { ParseQueryPipe } from '../../core/pipes/parse-query.pipe';
+import { UserResponse } from '../../core/types/user-response';
 
 @Controller(Rest.Payment.BASE)
 export class DonationController {
@@ -23,13 +24,15 @@ export class DonationController {
     ) {}
 
     @Post(Rest.Payment.DONATION)
+    @UsePipes(ParseQueryPipe)
     @UseGuards(AuthGuard)
     public async donation (
-        @Headers(RequestParams.AUTHORIZATION) token: string,
+        @Headers(RequestParams.AUTHORIZATION) userToken: string,
+        @Headers(RequestParams.AUTH_PLATFORM) authPlatform: string,
         @Body(new ValidationPipe(DONATION)) dto: DonationDto,
     ): Promise<DonationResponse> {
         const donationContract: typeof DatabaseContract.Donations = DatabaseContract.Donations;
-        const userData: TokenPayload | null = await this.authService.checkUserToken(token);
+        const userData: UserResponse | null = await this.authService.checkUserToken(userToken, authPlatform);
         const donationDto: IChargeCreationOptions = {
             amount: dto.amountPayment * 100, // conversion into cents
             currency: PaymentConfiguration.CURRENCY,
@@ -37,7 +40,7 @@ export class DonationController {
             source: dto.stripeTokenId,
         };
         const donationDtoDB: DonationType = {
-            [donationContract.PROPERTY_USER_EXTERNAL_ID]: userData.sub,
+            [donationContract.PROPERTY_USER_EXTERNAL_ID]: userData.id,
             [donationContract.PROPERTY_CURRENCY]: PaymentConfiguration.CURRENCY,
             [donationContract.PROPERTY_AMOUNT]: dto.amountPayment,
             [donationContract.PROPERTY_DESCRIPTION]: dto.description,
@@ -64,11 +67,11 @@ export class DonationController {
             // error handler of payments
             if (err.status === StatusCodeServerResponse.BAD_REQUEST) throw new BadRequestException(err.message.message);
 
-            // it is necessary to refund payment if payment was successful but you got an error with DB
+            // it is necessary to refund payment if payment was successful but you got an error in DB
             if (paymentResult.transactionId) await this.paymentService.refundDonation(paymentResult.transactionId);
 
             // error handler of other errors
-            throw new BadRequestException('Something went wrong. Please try later.');
+            throw new BadRequestException('Something went wrong. Please try later');
         }
     }
 

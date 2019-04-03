@@ -11,6 +11,7 @@ export const config = {
         dialect: 'mysql',                                       // dialect (should be 'mysql' - not tested on another ones)
         idle: 60 * 1000,                                        // the maximum time, in milliseconds, that a connection can be idle before being released
         maxPoolConnection: 10,                                  // maximum number of connection in pool
+        charset: 'utf8mb4',                                     // set charset type of data
     },
     auth: {                                                 // authentication configuration
         secretTokenKey: '1234567890',                       // key to encoding/decoding by jsonwebtoken
