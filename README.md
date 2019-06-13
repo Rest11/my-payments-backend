@@ -19,3 +19,5 @@ This is the server-side of the project "My Payments".
 6. Stripe (server-side);
 7. jsonwebtoken;
 8. Nodemon.
+
+Note: For making subscription you have to create Products (Dashboard -> Billing -> Products) and add plans for each products.
