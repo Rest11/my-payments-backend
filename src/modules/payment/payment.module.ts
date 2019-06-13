@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { databaseProvider } from '../../database/database.provider';
 import { DonationController } from './donation.controller';
-import { PaymentService } from './payment.service';
+import { DonationService } from './donation.service';
 import { stripeProvider } from '../../core/utils/stripe/stripe.provider';
 import { AuthServicesModule } from '../../services/auth-services.module';
 
@@ -12,7 +12,7 @@ import { AuthServicesModule } from '../../services/auth-services.module';
     providers: [
         databaseProvider,
         stripeProvider,
-        PaymentService,
+        DonationService,
     ],
     controllers: [
         DonationController,

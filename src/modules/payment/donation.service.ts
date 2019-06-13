@@ -13,7 +13,7 @@ import { DonationInstance } from '../../database/models/donation/donation.instan
 import { DatabaseContract } from '../../core/contracts/database.contract';
 
 @Injectable()
-export class PaymentService {
+export class DonationService {
     private readonly dateFormatField: string = 'date';
     private readonly dataFormatted: [fn, string] = [
         sequelize.fn('date_format', sequelize.col(DatabaseContract.Donations.COLUMN_CREATED_AT), '%Y-%m-%d'),

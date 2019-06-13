@@ -1,4 +1,4 @@
-import { Controller, Get, Headers, Query, UseGuards, UsePipes } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Headers, Query, UseGuards, UsePipes } from '@nestjs/common';
 import { Rest } from '../../core/contracts/rest.contract';
 import { AuthService } from '../../services/auth.service';
 import { TransactionService } from './transaction.service';
@@ -29,17 +29,21 @@ export class TransactionController {
         @Headers(RequestHeaderParams.AUTH_PLATFORM) authPlatform: string,
         @Query(new ValidationPipe(COLLECTION_QUERY_SCHEMA)) dto: CollectionQueryDto,
     ): Promise<CollectionResponse<DonationInstance>> {
-        const userData: UserData | null = await this.authService.checkUserToken(userToken, authPlatform);
+        try {
+            const userData: UserData | null = await this.authService.checkUserToken(userToken, authPlatform);
 
-        const params: TransactionsDto = {
-            userId: userData.id,
-            ...dto,
-        };
-        const data: GetTransactions = await this.transactionService.getTransactions(params);
+            const params: TransactionsDto = {
+                userId: userData.id,
+                ...dto,
+            };
+            const data: GetTransactions = await this.transactionService.getTransactions(params);
 
-        return {
-            items: data.rows,
-            total: data.count,
-        };
+            return {
+                items: data.rows,
+                total: data.count,
+            };
+        } catch (err) {
+            throw new BadRequestException(err.message);
+        }
     }
 }

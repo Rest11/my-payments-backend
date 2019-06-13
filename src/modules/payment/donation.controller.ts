@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Get, Headers, Post, UseGuards, UsePipes } from '@nestjs/common';
-import * as Stripe from 'stripe';
-import IChargeCreationOptions = Stripe.charges.IChargeCreationOptions;
+import { charges } from 'stripe';
+import IChargeCreationOptions = charges.IChargeCreationOptions;
 import { Rest } from '../../core/contracts/rest.contract';
 import { AuthService } from '../../services/auth.service';
 import { AuthGuard } from '../../core/guards/auth.guard';
@@ -8,7 +8,7 @@ import { ValidationPipe } from '../../core/pipes/validation.pipe';
 import { PaymentConfiguration, RequestHeaderParams, StatusCodeServerResponse } from '../../core/constants';
 import { DONATION } from './schemas/donation.schema';
 import { DonationDto } from './types/donation.dto';
-import { PaymentService } from './payment.service';
+import { DonationService } from './donation.service';
 import { DonationResponse } from './types/donation.response';
 import { DonationType } from '../../database/models/donation/donation.type';
 import { DatabaseContract } from '../../core/contracts/database.contract';
@@ -20,7 +20,7 @@ import { UserData } from '../../core/types/user-data';
 export class DonationController {
     constructor (
         private readonly authService: AuthService,
-        private readonly paymentService: PaymentService,
+        private readonly paymentService: DonationService,
     ) {}
 
     @Post(Rest.Payment.DONATION)
