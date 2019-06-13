@@ -41,7 +41,8 @@ export class SubscriptionController {
                 customerEmail: userData.email,
             };
 
-            return this.subscriptionService.createSubscriptionStripe(subscriptionData);
+            const result: CurrentSubscription = await this.subscriptionService.createSubscriptionStripe(subscriptionData);
+            return result;
         } catch (err) {
             throw new BadRequestException(err.message);
         }
