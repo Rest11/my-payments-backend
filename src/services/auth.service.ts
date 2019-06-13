@@ -4,7 +4,7 @@ import { config } from '../../config/config';
 import { GetTokenResponse } from '../modules/auth/types/get-token.response';
 import { AuthGoogleService } from './auth-google.service';
 import { AuthPlatform } from '../core/constants';
-import { UserResponse } from '../core/types/user-response';
+import { UserData } from '../core/types/user-data';
 import { AuthFacebookService } from './auth-facebook.service';
 
 @Injectable()
@@ -15,16 +15,16 @@ export class AuthService {
     ) {}
 
     public async getEncodedToken (token: string): Promise<GetTokenResponse> {
-        const encodedToken: any = jwt.sign(token, config.auth.secretTokenKey);
+        const encodedToken: string = jwt.sign(token, config.auth.secretTokenKey);
 
         return {
             currentToken: encodedToken,
         };
     }
 
-    public async checkUserToken (authToken: string, authPlatform: string): Promise<UserResponse | null> {
+    public async checkUserToken (authToken: string, authPlatform: string): Promise<UserData | null> {
         try {
-            let userData: UserResponse | null = null;
+            let userData: UserData | null = null;
             const decodedToken: any = jwt.verify(authToken, config.auth.secretTokenKey);
 
             switch (authPlatform) {

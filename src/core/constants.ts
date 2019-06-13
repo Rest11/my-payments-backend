@@ -4,7 +4,7 @@ export enum Injectables {
     GOOGLE_AUTH = 'Google auth',
 }
 
-export enum RequestParams {
+export enum RequestHeaderParams {
     AUTHORIZATION = 'authorization',
     AUTH_PLATFORM = 'auth-platform',
 }

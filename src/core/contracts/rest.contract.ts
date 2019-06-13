@@ -23,4 +23,12 @@ export namespace Rest {
     export namespace Transactions {
         export const BASE = 'transactions';
     }
+
+    export namespace Subscription {
+        export const BASE = 'subscription';
+
+        export const CURRENT = 'current';
+        export const CANCEL = 'cancel';
+        export const PARAM_SUBSCRIPTION_ID = 'subscriptionID';
+    }
 }

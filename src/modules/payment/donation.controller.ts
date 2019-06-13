@@ -5,7 +5,7 @@ import { Rest } from '../../core/contracts/rest.contract';
 import { AuthService } from '../../services/auth.service';
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { ValidationPipe } from '../../core/pipes/validation.pipe';
-import { PaymentConfiguration, RequestParams, StatusCodeServerResponse } from '../../core/constants';
+import { PaymentConfiguration, RequestHeaderParams, StatusCodeServerResponse } from '../../core/constants';
 import { DONATION } from './schemas/donation.schema';
 import { DonationDto } from './types/donation.dto';
 import { PaymentService } from './payment.service';
@@ -14,7 +14,7 @@ import { DonationType } from '../../database/models/donation/donation.type';
 import { DatabaseContract } from '../../core/contracts/database.contract';
 import { DonationInstance } from '../../database/models/donation/donation.instance';
 import { ParseQueryPipe } from '../../core/pipes/parse-query.pipe';
-import { UserResponse } from '../../core/types/user-response';
+import { UserData } from '../../core/types/user-data';
 
 @Controller(Rest.Payment.BASE)
 export class DonationController {
@@ -27,12 +27,13 @@ export class DonationController {
     @UsePipes(ParseQueryPipe)
     @UseGuards(AuthGuard)
     public async donation (
-        @Headers(RequestParams.AUTHORIZATION) userToken: string,
-        @Headers(RequestParams.AUTH_PLATFORM) authPlatform: string,
+        @Headers(RequestHeaderParams.AUTHORIZATION) userToken: string,
+        @Headers(RequestHeaderParams.AUTH_PLATFORM) authPlatform: string,
         @Body(new ValidationPipe(DONATION)) dto: DonationDto,
     ): Promise<DonationResponse> {
         const donationContract: typeof DatabaseContract.Donations = DatabaseContract.Donations;
-        const userData: UserResponse | null = await this.authService.checkUserToken(userToken, authPlatform);
+
+        const userData: UserData | null = await this.authService.checkUserToken(userToken, authPlatform);
         const donationDto: IChargeCreationOptions = {
             amount: dto.amountPayment * 100, // conversion into cents
             currency: PaymentConfiguration.CURRENCY,

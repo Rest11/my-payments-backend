@@ -3,7 +3,7 @@ import { Injectables } from '../core/constants';
 import { OAuth2Client } from 'google-auth-library';
 import { LoginTicket, TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import { config } from '../../config/config';
-import { UserResponse } from '../core/types/user-response';
+import { UserData } from '../core/types/user-data';
 
 @Injectable()
 export class AuthGoogleService {
@@ -12,7 +12,7 @@ export class AuthGoogleService {
         private readonly client: OAuth2Client,
     ) {}
 
-    public async getUser (decodedToken: string): Promise<UserResponse | null> {
+    public async getUser (decodedToken: string): Promise<UserData | null> {
         try {
             this.client.getAccessToken();
             const ticket: LoginTicket = await this.client.verifyIdToken({

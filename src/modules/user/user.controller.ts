@@ -4,10 +4,10 @@ import { Rest } from '../../core/contracts/rest.contract';
 import { AuthService } from '../../services/auth.service';
 import { UserType } from '../../database/models/user/user.type';
 import { UserService } from './user.service';
-import { UserInstance } from '../../database/models/user/user.instance';
 import { DatabaseContract } from '../../core/contracts/database.contract';
-import { RequestParams } from '../../core/constants';
-import { UserResponse } from '../../core/types/user-response';
+import { RequestHeaderParams } from '../../core/constants';
+import { UserData } from '../../core/types/user-data';
+import { UserResponse } from './types/user-response';
 
 @Controller(Rest.User.BASE)
 export class UserController {
@@ -19,10 +19,10 @@ export class UserController {
     @Get()
     @UseGuards(AuthGuard)
     public async saveUser (
-        @Headers(RequestParams.AUTHORIZATION) userToken: string,
-        @Headers(RequestParams.AUTH_PLATFORM) authPlatform: string,
-    ): Promise<UserInstance> {
-        const userData: UserResponse | null = await this.authService.checkUserToken(userToken, authPlatform);
+        @Headers(RequestHeaderParams.AUTHORIZATION) userToken: string,
+        @Headers(RequestHeaderParams.AUTH_PLATFORM) authPlatform: string,
+    ): Promise<UserResponse> {
+        const userData: UserData | null = await this.authService.checkUserToken(userToken, authPlatform);
         const userDto: UserType = {
             [DatabaseContract.Users.PROPERTY_EXTERNAL_ID]: userData.id,
             [DatabaseContract.Users.PROPERTY_NAME]: userData.name,
@@ -30,8 +30,6 @@ export class UserController {
             [DatabaseContract.Users.PROPERTY_AVATAR]: userData.avatar,
         };
 
-        const result: [ UserInstance, boolean ] = await this.userService.saveUser(userDto);
-
-        return result[0];
+        return  this.userService.saveUser(userDto);
     }
 }
