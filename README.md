@@ -20,4 +20,4 @@ This is the server-side of the project "My Payments".
 7. jsonwebtoken;
 8. Nodemon.
 
-Note: For making subscription you have to create Products (Dashboard -> Billing -> Products) and add plans for each products.
+Note: For making subscription you have to create Products and add plans for each products in your [Stripe account](https://dashboard.stripe.com/test/subscriptions/products).
