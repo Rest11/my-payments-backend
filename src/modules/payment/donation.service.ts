@@ -52,7 +52,7 @@ export class DonationService {
 
     public async getUsersAmount (): Promise<DonationInstance[]> {
         const dateFormatField: string = 'date';
-        const usersCountField: string = 'usersCount';
+        const usersCountField: string = 'usersAmount';
         const options: FindOptions<DonationInstance> = {
             where: {
                 [DatabaseContract.Donations.PROPERTY_STATUS]: true,

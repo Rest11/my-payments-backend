@@ -12,9 +12,9 @@ import { DonationService } from './donation.service';
 import { DonationResponse } from './types/donation.response';
 import { DonationType } from '../../database/models/donation/donation.type';
 import { DatabaseContract } from '../../core/contracts/database.contract';
-import { DonationInstance } from '../../database/models/donation/donation.instance';
 import { ParseQueryPipe } from '../../core/pipes/parse-query.pipe';
 import { UserData } from '../../core/types/user-data';
+import { PaymentStatistic } from './types/payment-statistic';
 
 @Controller(Rest.Payment.BASE)
 export class DonationController {
@@ -76,21 +76,19 @@ export class DonationController {
         }
     }
 
-    @Get(Rest.Payment.USERS_AMOUNT)
+    @Get(Rest.Payment.STATISTIC)
     @UseGuards(AuthGuard)
-    public async usersAmount (): Promise<DonationInstance[]> {
-        return this.paymentService.getUsersAmount();
-    }
+    public async paymentsStatistic (): Promise<PaymentStatistic> {
+        const [ sum, amount, usersAmount ]  = await Promise.all([
+            this.paymentService.getPaymentsSum(),
+            this.paymentService.getPaymentsAmount(),
+            this.paymentService.getUsersAmount(),
+        ]);
 
-    @Get(Rest.Payment.PAYMENTS_AMOUNT)
-    @UseGuards(AuthGuard)
-    public async paymentsAmount (): Promise<DonationInstance[]> {
-        return this.paymentService.getPaymentsAmount();
-    }
-
-    @Get(Rest.Payment.PAYMENTS_SUM)
-    @UseGuards(AuthGuard)
-    public async paymentsSum (): Promise<DonationInstance[]> {
-        return this.paymentService.getPaymentsSum();
+        return {
+            sum,
+            amount,
+            usersAmount,
+        };
     }
 }
