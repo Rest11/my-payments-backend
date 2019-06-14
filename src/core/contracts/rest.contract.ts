@@ -15,12 +15,18 @@ export namespace Rest {
         export const BASE = 'payment';
 
         export const DONATION = 'donation';
-        export const USERS_AMOUNT = 'users-amount';
-        export const PAYMENTS_AMOUNT = 'payments-amount';
-        export const PAYMENTS_SUM = 'payments-sum';
+        export const STATISTIC = 'statistic';
     }
 
     export namespace Transactions {
         export const BASE = 'transactions';
+    }
+
+    export namespace Subscription {
+        export const BASE = 'subscription';
+
+        export const CURRENT = 'current';
+        export const CANCEL = 'cancel';
+        export const PARAM_SUBSCRIPTION_ID = 'subscriptionID';
     }
 }

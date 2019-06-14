@@ -1,6 +1,6 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { UserResponse } from '../core/types/user-response';
+import { UserData } from '../core/types/user-data';
 
 @Injectable()
 export class AuthFacebookService {
@@ -8,9 +8,9 @@ export class AuthFacebookService {
         private readonly http: HttpService,
     ) {}
 
-    public async getUser (decodedToken: string): Promise<UserResponse | null> {
-        const userFields: string = 'id, name, email, picture';
+    public async getUser (decodedToken: string): Promise<UserData | null> {
         try {
+            const userFields: string = 'id, name, email, picture';
             const url: string = 'https://graph.facebook.com/me';
             const options: AxiosRequestConfig = {
                 params: {
