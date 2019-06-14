@@ -1,38 +1,39 @@
 import { BadRequestException, Body, Controller, Get, Headers, Post, UseGuards, UsePipes } from '@nestjs/common';
-import * as Stripe from 'stripe';
-import IChargeCreationOptions = Stripe.charges.IChargeCreationOptions;
+import { charges } from 'stripe';
+import IChargeCreationOptions = charges.IChargeCreationOptions;
 import { Rest } from '../../core/contracts/rest.contract';
 import { AuthService } from '../../services/auth.service';
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { ValidationPipe } from '../../core/pipes/validation.pipe';
-import { PaymentConfiguration, RequestParams, StatusCodeServerResponse } from '../../core/constants';
+import { PaymentConfiguration, RequestHeaderParams, StatusCodeServerResponse } from '../../core/constants';
 import { DONATION } from './schemas/donation.schema';
 import { DonationDto } from './types/donation.dto';
-import { PaymentService } from './payment.service';
+import { DonationService } from './donation.service';
 import { DonationResponse } from './types/donation.response';
 import { DonationType } from '../../database/models/donation/donation.type';
 import { DatabaseContract } from '../../core/contracts/database.contract';
-import { DonationInstance } from '../../database/models/donation/donation.instance';
 import { ParseQueryPipe } from '../../core/pipes/parse-query.pipe';
-import { UserResponse } from '../../core/types/user-response';
+import { UserData } from '../../core/types/user-data';
+import { PaymentStatistic } from './types/payment-statistic';
 
 @Controller(Rest.Payment.BASE)
 export class DonationController {
     constructor (
         private readonly authService: AuthService,
-        private readonly paymentService: PaymentService,
+        private readonly paymentService: DonationService,
     ) {}
 
     @Post(Rest.Payment.DONATION)
     @UsePipes(ParseQueryPipe)
     @UseGuards(AuthGuard)
     public async donation (
-        @Headers(RequestParams.AUTHORIZATION) userToken: string,
-        @Headers(RequestParams.AUTH_PLATFORM) authPlatform: string,
+        @Headers(RequestHeaderParams.AUTHORIZATION) userToken: string,
+        @Headers(RequestHeaderParams.AUTH_PLATFORM) authPlatform: string,
         @Body(new ValidationPipe(DONATION)) dto: DonationDto,
     ): Promise<DonationResponse> {
         const donationContract: typeof DatabaseContract.Donations = DatabaseContract.Donations;
-        const userData: UserResponse | null = await this.authService.checkUserToken(userToken, authPlatform);
+
+        const userData: UserData | null = await this.authService.checkUserToken(userToken, authPlatform);
         const donationDto: IChargeCreationOptions = {
             amount: dto.amountPayment * 100, // conversion into cents
             currency: PaymentConfiguration.CURRENCY,
@@ -75,21 +76,19 @@ export class DonationController {
         }
     }
 
-    @Get(Rest.Payment.USERS_AMOUNT)
+    @Get(Rest.Payment.STATISTIC)
     @UseGuards(AuthGuard)
-    public async usersAmount (): Promise<DonationInstance[]> {
-        return this.paymentService.getUsersAmount();
-    }
+    public async paymentsStatistic (): Promise<PaymentStatistic> {
+        const [ sum, amount, usersAmount ]  = await Promise.all([
+            this.paymentService.getPaymentsSum(),
+            this.paymentService.getPaymentsAmount(),
+            this.paymentService.getUsersAmount(),
+        ]);
 
-    @Get(Rest.Payment.PAYMENTS_AMOUNT)
-    @UseGuards(AuthGuard)
-    public async paymentsAmount (): Promise<DonationInstance[]> {
-        return this.paymentService.getPaymentsAmount();
-    }
-
-    @Get(Rest.Payment.PAYMENTS_SUM)
-    @UseGuards(AuthGuard)
-    public async paymentsSum (): Promise<DonationInstance[]> {
-        return this.paymentService.getPaymentsSum();
+        return {
+            sum,
+            amount,
+            usersAmount,
+        };
     }
 }

@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { INestApplication, INestExpressApplication } from '@nestjs/common';
+import { NestApplicationOptions } from '@nestjs/common/interfaces/nest-application-options.interface';
+import { AppModule } from './app.module';
 import { config } from '../config/config';
 import { Rest } from './core/contracts/rest.contract';
-import { NestApplicationOptions } from '@nestjs/common/interfaces/nest-application-options.interface';
 
 async function bootstrap () {
     // setting global prefix for each request

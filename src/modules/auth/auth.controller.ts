@@ -6,8 +6,8 @@ import { ValidationPipe } from '../../core/pipes/validation.pipe';
 import { GET_TOKEN } from './schemas/get-token.schema';
 import { GetTokenDto } from './types/get-token.dto';
 import { GetTokenResponse } from './types/get-token.response';
-import { RequestParams } from '../../core/constants';
-import { UserResponse } from '../../core/types/user-response';
+import { RequestHeaderParams } from '../../core/constants';
+import { UserData } from '../../core/types/user-data';
 
 @Controller(Rest.Auth.BASE)
 export class AuthController {
@@ -17,8 +17,8 @@ export class AuthController {
 
     @Get()
     public async checkingToken (
-        @Headers(RequestParams.AUTHORIZATION) userToken: string,
-        @Headers(RequestParams.AUTH_PLATFORM) authPlatform: string,
+        @Headers(RequestHeaderParams.AUTHORIZATION) userToken: string,
+        @Headers(RequestHeaderParams.AUTH_PLATFORM) authPlatform: string,
     ): Promise<CheckingTokenResponse> {
         const checking: CheckingTokenResponse = {
             isAuthenticated: false,
@@ -26,7 +26,7 @@ export class AuthController {
 
         if (!userToken || !authPlatform) return checking;
 
-        const result: UserResponse | null = await this.authService.checkUserToken(userToken, authPlatform);
+        const result: UserData | null = await this.authService.checkUserToken(userToken, authPlatform);
         checking.isAuthenticated = !!result;
 
         return checking;

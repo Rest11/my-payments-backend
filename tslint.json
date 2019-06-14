@@ -29,6 +29,9 @@
     "radix": false,
     "quotemark": false,
     "no-trailing-whitespace": false,
-    "eofline": false
+    "eofline": false,
+    "array-bracket-spacing": [
+        true
+    ]
   }
 }

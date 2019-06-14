@@ -13,7 +13,7 @@ import { DonationInstance } from '../../database/models/donation/donation.instan
 import { DatabaseContract } from '../../core/contracts/database.contract';
 
 @Injectable()
-export class PaymentService {
+export class DonationService {
     private readonly dateFormatField: string = 'date';
     private readonly dataFormatted: [fn, string] = [
         sequelize.fn('date_format', sequelize.col(DatabaseContract.Donations.COLUMN_CREATED_AT), '%Y-%m-%d'),
@@ -52,7 +52,7 @@ export class PaymentService {
 
     public async getUsersAmount (): Promise<DonationInstance[]> {
         const dateFormatField: string = 'date';
-        const usersCountField: string = 'usersCount';
+        const usersCountField: string = 'usersAmount';
         const options: FindOptions<DonationInstance> = {
             where: {
                 [DatabaseContract.Donations.PROPERTY_STATUS]: true,
