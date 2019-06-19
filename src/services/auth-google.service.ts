@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Injectables } from '../core/constants';
 import { OAuth2Client } from 'google-auth-library';
 import { LoginTicket, TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
+import { Injectables } from '../core/constants';
 import { config } from '../../config/config';
 import { UserData } from '../core/types/user-data';
 
