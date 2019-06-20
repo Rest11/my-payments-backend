@@ -21,7 +21,7 @@
     "rxjs": "6.2.2",
     "sequelize": "4.42.0",
     "stripe": "6.23.1",
-    "typescript": "3.0.1"
+    "typescript": "3.5.2"
   },
   "devDependencies": {
     "@nestjs/testing": "5.1.0",
