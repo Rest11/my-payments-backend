@@ -6,7 +6,9 @@ import { config } from '../config/config';
 import { Rest } from './core/contracts/rest.contract';
 
 async function bootstrap () {
+    // setting port to the server
     const port: number | string = process.env.PORT || config.server.port;
+
     // setting global prefix for each request
     const globalPrefix: string = `${Rest.API}/v${config.server.apiVersion}`;
 
