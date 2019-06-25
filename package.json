@@ -6,9 +6,12 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "start-build": "node dist/src/main.js",
+    "start-debug": "nodemon --config nodemon-debug.json",
     "watch": "nodemon",
     "build": "tsc -p tsconfig.build.json",
-    "start:debug": "nodemon --config nodemon-debug.json"
+    "logs-remote": "heroku logs --tail",
+    "deploy": "bash ./git-push-heroku.sh && npm run logs-remote"
   },
   "dependencies": {
     "@nestjs/common": "5.4.0",
