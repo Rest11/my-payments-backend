@@ -1,6 +1,7 @@
 node_modules
 .idea
 config/config.ts
+git-push-heroku.sh
 tmp
 dist
 
