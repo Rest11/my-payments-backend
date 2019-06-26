@@ -1,13 +1,16 @@
+# folders
 node_modules
 .idea
-config/config.ts
-git-push-heroku.sh
 tmp
 dist
 
+# pattern files
 config/**/*.js
 src/**/*.js
 !src/database/migrations/*.js
 !src/database/seeders/*.js
 
+# files
 !.gitkeep
+config/config.ts
+git-push-heroku.sh
